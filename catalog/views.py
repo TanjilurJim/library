@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from .models import Book,Author,BookInstance,Genre,Language 
-from django.views.generic import CreateView,DetailView 
+from .models import Book,Author,BookInstance,Genre,Language
+from django.views.generic import  *
 
 # Create your views here.
 def index(request):
@@ -25,4 +25,11 @@ class BookCreate(CreateView): #book_form.html
     fields = '__all__'
 
 class BookDetail(DetailView):
+
     model = Book
+
+class BookListView(ListView):
+    model = Book
+    queryset = Book.objects.all()
+    context_object_name = 'book_list'
+    

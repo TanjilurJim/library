@@ -1,4 +1,11 @@
+{% extends 'catalog/index.html' %} {% block content %}
 <h1>List of books</h1>
 
+
 {% for book in object_list %}
-<ul>{{book.title}}</ul>{% endfor %}
+<ul>
+    <li>{{ book.title }}
+        <a href="{% url 'catalog:book_detail' book.id %}">details</a>
+    </li>
+</ul>
+{% endfor %} {% endblock %}

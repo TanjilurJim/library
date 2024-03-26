@@ -29,10 +29,10 @@ class Book(models.Model):
     # MORE TO COME
 
     def __str__(self):
-        return self.title 
+        return f"{self.title} written by {self.author} it is a {self.genre} type of book" 
     
     def get_absolute_url(self):
-        return reverse("book_detail", kwargs={"pk": self.pk})
+        return reverse("catalog:book_detail", kwargs={"pk": self.pk})
     
 
 

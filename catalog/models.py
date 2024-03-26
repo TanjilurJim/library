@@ -29,7 +29,8 @@ class Book(models.Model):
     # MORE TO COME
 
     def __str__(self):
-        return f"{self.title} written by {self.author} it is a {self.genre} type of book" 
+        
+        return f"{self.title} written by {self.author}. it is a {self.genre} type of book" 
     
     def get_absolute_url(self):
         return reverse("catalog:book_detail", kwargs={"pk": self.pk})

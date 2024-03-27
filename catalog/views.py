@@ -33,3 +33,4 @@ class BookListView(ListView):
     queryset = Book.objects.all()
     context_object_name = 'book_list'
     
+ 

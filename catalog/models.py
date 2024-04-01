@@ -27,6 +27,7 @@ class Book(models.Model):
     genre = models.ManyToManyField(Genre)
     language = models.ForeignKey('Language',on_delete=models.SET_NULL,null=True)
     # MORE TO COME
+    
 
     def __str__(self):
         

@@ -2,6 +2,8 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from .models import Book,Author,BookInstance,Genre,Language
 from django.views.generic import  *
+from django.contrib.auth.decorators import login_required # function based er jonno decorator
+from django.contrib.auth.mixins import LoginRequiredMixin #for class based views
 
 # Create your views here.
 def index(request):
@@ -20,7 +22,7 @@ def index(request):
     return render(request,'catalog/index.html',context=context)
 
 
-class BookCreate(CreateView): #book_form.html
+class BookCreate(LoginRequiredMixin, CreateView): #book_form.html
     model = Book 
     fields = '__all__'
 
@@ -32,5 +34,8 @@ class BookListView(ListView):
     model = Book
     queryset = Book.objects.all()
     context_object_name = 'book_list'
+
+@login_required
+def my_view(request):
+    return render(request,'catalog/my_view.html')
     
- 

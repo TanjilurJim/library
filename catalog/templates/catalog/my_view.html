@@ -1,10 +1,15 @@
-{% extends "catalog/index.html" %}
-
-
-{% block content %}
-<p>Logged in Users only</p>  
+{% extends "catalog/index.html" %} {% block content %}
+<p>Logged in Users only</p>
 <h1> Hello, {{user.get_username}}
+    <h2>Here are your books checked out:</h2>
+
+    {% for book in bookinstance_list %}
+    <ul>
+        <li>
+            <p>Id: {{book}} </p>
+
+        </li>
+    </ul>
 
 
-{% endblock content %}
-    
+    {% endfor %} {% endblock content %}

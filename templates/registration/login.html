@@ -1,3 +1,10 @@
+{% extends "catalog/index.html" %}
+
+
+{% block content %}
+    
+
+    
 {% if form.errors %}
 <p> Your username or password was incorrect. Try again </p>{% endif %} {% if next %} {% if user.is_authenticated %}
 <p>You don't have permission.</p>
@@ -14,3 +21,7 @@
     <input type="hidden" name="next" value="{{next}}">
 
 </form>
+
+<p> new user? <a href="{% url 'catalog:signup' %}">CLick here to SignUp instead</a>
+
+{% endblock content %}

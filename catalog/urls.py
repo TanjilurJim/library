@@ -13,4 +13,8 @@ urlpatterns = [
     # path('my_view/',views.my_view,name='my_view'),
     path('my_view/',views.CheckedOutBooksByUserView.as_view(),name='my_view'),
     path('signup/',views.SignUpView.as_view(),name='signup'),
+    path('renew/<uuid:pk>/', views.renew_book, name='renew_book'),
+    path('borrow/<int:pk>/', views.borrow_book, name='borrow_book'),
+
+
 ]

@@ -1,11 +1,13 @@
-{% extends 'catalog/index.html' %} {% block content %}
+{% extends 'catalog/index.html' %}
+{% block content %}
 <h1>List of books</h1>
 
-
-{% for book in object_list %}
+{% for book in book_list %}
 <ul>
     <li>{{ book.title }}
         <a href="{% url 'catalog:book_detail' book.id %}">details</a>
+        <a href="{% url 'catalog:borrow_book' book.id %}">Borrow</a>
     </li>
 </ul>
-{% endfor %} {% endblock %}
+{% endfor %}
+{% endblock %}

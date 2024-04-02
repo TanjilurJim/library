@@ -16,11 +16,19 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
+from django.conf.urls import handler403
+from django.shortcuts import render
 
+
+def custom_permission_denied_view(request, exception, template_name="403.html"):
+    return render(request, template_name)
+
+handler403 = custom_permission_denied_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',include('catalog.urls')),
+    path('catalog/', include('catalog.urls')),
     path('accounts/',include('django.contrib.auth.urls')),
 
 ]

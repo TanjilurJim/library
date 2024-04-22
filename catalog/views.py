@@ -32,7 +32,7 @@ def index(request):
 class BookCreate(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     model = Book
     fields = '__all__'
-    template_name = 'catalog/create_book.html'
+    template_name = 'catalog/book_form.html'
 
     def test_func(self):
         return self.request.user.is_superuser

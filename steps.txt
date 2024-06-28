@@ -1,0 +1,6 @@
+I created a virtual environment named it myenv
+python 3.10 version
+installed django
+username: user
+admin pass : myadminpassword
+admin mail: admin@gmail.com

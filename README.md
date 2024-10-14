@@ -4,6 +4,6 @@
 
 ## Admin login
 
-username : `admin@gmail.com`  
+username : `admin`  
 password: `Tan@jim21`
  

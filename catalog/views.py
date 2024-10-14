@@ -8,6 +8,14 @@ from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
 
 
+from django.shortcuts import get_object_or_404, redirect
+from django.utils import timezone
+from datetime import timedelta
+
+
+
+
+
 # Create your views here.
 def index(request):
 
@@ -64,10 +72,7 @@ class CheckedOutBooksByUserView(LoginRequiredMixin,ListView):
     
     
 
-from django.shortcuts import get_object_or_404, redirect
-from django.utils import timezone
-from datetime import timedelta
-from django.contrib.auth.decorators import login_required
+
 
 @login_required
 def borrow_book(request, pk):
@@ -82,10 +87,7 @@ def borrow_book(request, pk):
         # This GET method will just redirect to book detail or could show a confirmation page
         return redirect('catalog:book_detail', pk=book_instance.book.pk)
 
-from django.utils import timezone
-from datetime import timedelta
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import get_object_or_404, redirect
+
 
 @login_required
 def renew_book(request, pk):

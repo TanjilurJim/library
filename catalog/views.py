@@ -59,8 +59,40 @@ class CheckedOutBooksByUserView(LoginRequiredMixin,ListView):
 
 
     def get_queryset(self):
-        return BookInstance.objects.filter(borrower=self.request.user).all()
+        return BookInstance.objects.filter(borrower=self.request.user).order_by('due_back')
     
     
     
 
+from django.shortcuts import get_object_or_404, redirect
+from django.utils import timezone
+from datetime import timedelta
+from django.contrib.auth.decorators import login_required
+
+@login_required
+def borrow_book(request, pk):
+    book_instance = get_object_or_404(BookInstance, pk=pk, status='a')  # 'a' for available
+    if request.method == 'POST':
+        book_instance.status = 'o'  # 'o' for on loan
+        book_instance.due_back = timezone.now() + timedelta(days=7)
+        book_instance.borrower = request.user
+        book_instance.save()
+        return redirect('catalog:book_detail', pk=book_instance.book.pk)
+    else:
+        # This GET method will just redirect to book detail or could show a confirmation page
+        return redirect('catalog:book_detail', pk=book_instance.book.pk)
+
+from django.utils import timezone
+from datetime import timedelta
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import get_object_or_404, redirect
+
+@login_required
+def renew_book(request, pk):
+    book_instance = get_object_or_404(BookInstance, pk=pk, borrower=request.user, status='o')  # Ensure only borrowed books by this user
+    if request.method == 'POST':
+        book_instance.due_back = timezone.now() + timedelta(days=7)  # Extend due date by 7 days
+        book_instance.save()
+        return redirect('catalog:my_view')  # Redirect back to the list of borrowed books
+    else:
+        return redirect('catalog:my_view')  # Redirect if not a POST request

@@ -1,11 +1,21 @@
-{% extends 'catalog/index.html' %} {% block content %}
+{% extends 'catalog/index.html' %}
+{% block content %}
 <h1>List of books</h1>
-
 
 {% for book in object_list %}
 <ul>
     <li>{{ book.title }}
         <a href="{% url 'catalog:book_detail' book.id %}">details</a>
+        <!-- Check if there is any available instance -->
+        {% for instance in book.bookinstance_set.all %}
+            {% if instance.status == 'a' %}
+                <form action="{% url 'catalog:borrow_book' instance.id %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit">Borrow</button>
+                </form>
+            {% endif %}
+        {% endfor %}
     </li>
 </ul>
-{% endfor %} {% endblock %}
+{% endfor %}
+{% endblock %}

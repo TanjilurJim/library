@@ -1,15 +1,19 @@
-{% extends "catalog/index.html" %} {% block content %}
+{% extends "catalog/index.html" %}
+
+{% block content %}
 <p>Logged in Users only</p>
-<h1> Hello, {{user.get_username}}
-    <h2>Here are your books checked out:</h2>
+<h1> Hello, {{ user.get_username }} </h1>
+<h2>Here are your books checked out:</h2>
 
-    {% for book in bookinstance_list %}
-    <ul>
-        <li>
-            <p>Id: {{book}} </p>
-
-        </li>
-    </ul>
-
-
-    {% endfor %} {% endblock content %}
+{% for book_instance in bookinstance_list %}
+<ul>
+    <li>
+        <p>Id: {{ book_instance.id }} - Title: {{ book_instance.book.title }} - Due: {{ book_instance.due_back }}</p>
+        <form action="{% url 'catalog:renew_book' book_instance.id %}" method="post">
+            {% csrf_token %}
+            <button type="submit">Renew</button>
+        </form>
+    </li>
+</ul>
+{% endfor %}
+{% endblock content %}

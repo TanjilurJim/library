@@ -5,5 +5,11 @@
 ## Admin login
 
 username : `admin`  
-password: `Tan@jim21`
+password: `Tan@jim21`  
+
+## User login
+
+
+username : `jim@gmail.com`  
+password: `jim@112233`  
  

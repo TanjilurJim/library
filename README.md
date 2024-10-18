@@ -5,5 +5,11 @@
 ## Admin login
 
 username : `admin`  
-password: `Tan@jim21`
+password: `Tan@jim21`  
+
+## User login
+
+
+username : `Origi`  
+password: `ctqorigi123`  
  

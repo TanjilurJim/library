@@ -6,16 +6,38 @@
 <ul>
     <li>{{ book.title }}
         <a href="{% url 'catalog:book_detail' book.id %}">details</a>
-        <!-- Check if there is any available instance -->
-        {% for instance in book.bookinstance_set.all %}
-            {% if instance.status == 'a' %}
-                <form action="{% url 'catalog:borrow_book' instance.id %}" method="post">
-                    {% csrf_token %}
-                    <button type="submit">Borrow</button>
-                </form>
-            {% endif %}
-        {% endfor %}
+
+        <!-- Show how many instances of this book are available -->
+        <p>Available copies: {{ book.available_instances }}</p>
+        
+        <!-- Only show the "Borrow" button if there is at least one available instance -->
+        {% if book.first_available_instance_id %}
+            <form action="{% url 'catalog:borrow_book' book.first_available_instance_id %}" method="post">
+                {% csrf_token %}
+                <button type="submit">Borrow</button>
+            </form>
+        {% endif %}
     </li>
 </ul>
 {% endfor %}
+
+<!-- Pagination controls -->
+<div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        </span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+
 {% endblock %}

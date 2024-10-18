@@ -53,6 +53,21 @@ class BookListView(ListView):
     model = Book
     queryset = Book.objects.all()
     context_object_name = 'book_list'
+    paginate_by = 5  # Show 5 books per page
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # For each book, annotate with the first available instance ID (or None)
+        for book in context['book_list']:
+            first_available_instance = book.bookinstance_set.filter(status='a').first()
+            if first_available_instance:
+                book.first_available_instance_id = first_available_instance.id
+            else:
+                book.first_available_instance_id = None
+
+        return context
+
+
 
 @login_required
 def my_view(request):

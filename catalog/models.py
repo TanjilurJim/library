@@ -37,6 +37,10 @@ class Book(models.Model):
     def get_absolute_url(self):
         return reverse("catalog:book_detail", kwargs={"pk": self.pk})
     
+    def available_instances(self):
+        """Return the number of available copies of this book."""
+        return self.bookinstance_set.filter(status='a').count()
+    
 
 
 class Author(models.Model):

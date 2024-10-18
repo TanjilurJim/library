@@ -2,8 +2,9 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from .models import Book,Author,BookInstance,Genre,Language
 from django.views.generic import  *
-from django.contrib.auth.decorators import login_required # function based er jonno decorator
-from django.contrib.auth.mixins import LoginRequiredMixin #for class based views
+from django.contrib.auth.decorators import login_required,user_passes_test
+ # function based er jonno decorator
+from django.contrib.auth.mixins import LoginRequiredMixin,UserPassesTestMixin #for class based views
 from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
 
@@ -14,7 +15,8 @@ from datetime import timedelta
 
 
 
-
+def is_librarian_or_admin(user):
+    return user.is_superuser or user.groups.filter(name='Librarian').exists()
 
 # Create your views here.
 def index(request):
@@ -33,9 +35,15 @@ def index(request):
     return render(request,'catalog/index.html',context=context)
 
 
-class BookCreate(LoginRequiredMixin, CreateView): #book_form.html
+class BookCreate(LoginRequiredMixin, UserPassesTestMixin, CreateView):  # book_form.html
     model = Book 
     fields = '__all__'
+
+    # Implementing the test_func method to restrict access
+    def test_func(self):
+        # Allow access only to superusers or users in the 'Librarian' group
+        return self.request.user.is_superuser or self.request.user.groups.filter(name='Librarian').exists()
+
 
 class BookDetail(DetailView):
 

@@ -2,6 +2,7 @@ from django.db import models
 from django.urls import reverse 
 from django.contrib.auth.models import User
 
+
 # Create your models here.
 class Genre(models.Model):
 
@@ -40,7 +41,6 @@ class Book(models.Model):
     def available_instances(self):
         """Return the number of available copies of this book."""
         return self.bookinstance_set.filter(status='a').count()
-
     
 
 

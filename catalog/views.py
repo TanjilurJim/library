@@ -136,4 +136,15 @@ class SearchResultsView(ListView):
                 Q(author__first_name__icontains=query) |
                 Q(author__last_name__icontains=query)
             ).distinct()
-        return Book.objects.none()  # Return an empty queryset if no query
+        return Book.objects.none()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Set the `first_available_instance_id` for each book in search results
+        for book in context['book_list']:
+            first_available_instance = book.bookinstance_set.filter(status='a').first()
+            if first_available_instance:
+                book.first_available_instance_id = first_available_instance.id
+            else:
+                book.first_available_instance_id = None
+        return context

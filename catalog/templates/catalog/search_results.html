@@ -10,6 +10,27 @@
         <li>
             <a href="{% url 'catalog:book_detail' book.pk %}">{{ book.title }}</a>
             <p>Author: {{ book.author.first_name }} {{ book.author.last_name }}</p>
+            <p>Available copies: {{ book.available_instances }}</p>
+
+            {% if user.is_authenticated %}
+                <!-- Show "Borrow" button if there are available copies -->
+                {% if book.first_available_instance_id %}
+                    <form action="{% url 'catalog:borrow_book' book.first_available_instance_id %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-primary">Borrow</button>
+                    </form>
+                {% else %}
+                    <p>No available copies to borrow.</p>
+                {% endif %}
+            {% else %}
+                {% if book.first_available_instance_id %}
+                    <a href="{% url 'login' %}?next={% url 'catalog:borrow_book' book.first_available_instance_id %}" class="btn btn-secondary">
+                        Login to Borrow
+                    </a>
+                {% else %}
+                    <p>No available copies to borrow.</p>
+                {% endif %}
+            {% endif %}
         </li>
         {% endfor %}
     </ul>

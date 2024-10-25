@@ -13,6 +13,7 @@ from django.shortcuts import get_object_or_404, redirect
 from django.utils import timezone
 from datetime import timedelta
 
+from django.db.models import Q
 
 
 def is_librarian_or_admin(user):
@@ -121,3 +122,18 @@ def renew_book(request, pk):
         return redirect('catalog:my_view')  # Redirect back to the list of borrowed books
     else:
         return redirect('catalog:my_view')  # Redirect if not a POST request
+
+class SearchResultsView(ListView):
+    model = Book
+    template_name = 'catalog/search_results.html'
+    context_object_name = 'book_list'
+
+    def get_queryset(self):
+        query = self.request.GET.get("q")
+        if query:
+            return Book.objects.filter(
+                Q(title__icontains=query) |
+                Q(author__first_name__icontains=query) |
+                Q(author__last_name__icontains=query)
+            ).distinct()
+        return Book.objects.none()  # Return an empty queryset if no query

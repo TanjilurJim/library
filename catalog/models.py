@@ -23,9 +23,9 @@ class Language(models.Model):
 
 
 class Book(models.Model):
-    title = models.CharField(max_length=200)
+    title = models.CharField(max_length=200, db_index=True)
     author = models.ForeignKey('Author', on_delete=models.SET_NULL, null=True)
-    summary = models.TextField(max_length=600)
+    summary = models.TextField(max_length=600, null=True)
     isbn = models.CharField('ISBN', max_length=13, unique=True)
     genre = models.ManyToManyField(Genre)
     language = models.ForeignKey('Language', on_delete=models.SET_NULL, null=True)
@@ -45,8 +45,8 @@ class Book(models.Model):
 
 
 class Author(models.Model):
-    first_name = models.CharField(max_length=200)
-    last_name = models.CharField(max_length=200)
+    first_name = models.CharField(max_length=200, db_index=True)
+    last_name = models.CharField(max_length=200, db_index=True)
     date_of_birth = models.DateField(null=True,blank=True)
 
     class Meta:

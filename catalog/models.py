@@ -7,6 +7,9 @@ class Genre(models.Model):
 
     name = models.CharField(max_length=150)
 
+    def get_absolute_url(self):
+        return reverse("genre_detail", kwargs={"pk": self.pk})
+
     def __str__(self):
         return self.name 
 
@@ -20,26 +23,24 @@ class Language(models.Model):
 
 
 class Book(models.Model):
-
     title = models.CharField(max_length=200)
-    author = models.ForeignKey('Author',on_delete=models.SET_NULL,null=True)
+    author = models.ForeignKey('Author', on_delete=models.SET_NULL, null=True)
     summary = models.TextField(max_length=600)
-    isbn = models.CharField('ISBN',max_length=13,unique=True)
+    isbn = models.CharField('ISBN', max_length=13, unique=True)
     genre = models.ManyToManyField(Genre)
-    language = models.ForeignKey('Language',on_delete=models.SET_NULL,null=True)
-    # MORE TO COME
-    
+    language = models.ForeignKey('Language', on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
-        
-        return f"{self.title} written by {self.author}. it is a {self.genre} type of book" 
-    
+        genres = ", ".join([genre.name for genre in self.genre.all()])
+        return f"{self.title} written by {self.author}. It is a/an {genres} type of book"
+
     def get_absolute_url(self):
         return reverse("catalog:book_detail", kwargs={"pk": self.pk})
-    
+
     def available_instances(self):
         """Return the number of available copies of this book."""
         return self.bookinstance_set.filter(status='a').count()
+
     
 
 
